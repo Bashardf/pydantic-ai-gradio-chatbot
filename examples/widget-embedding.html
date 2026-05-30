@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot Integration Example</title>
+    <style>
+        body { font-family: sans-serif; padding: 50px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Website Integration</h1>
+        <p>To add the AI chatbot to your website, simply include the <code>widget.js</code> script and the corresponding CSS.</p>
+        
+        <hr>
+
+        <!-- CHATBOT WIDGET START -->
+        <!-- 1. Include CSS -->
+        <link rel="stylesheet" href="http://localhost:8000/widget/widget.css">
+
+        <!-- 2. Include JS with Configuration -->
+        <script 
+            src="http://localhost:8000/widget/widget.js" 
+            data-api="http://localhost:8000" 
+            data-client-id="demo-website"
+            async>
+        </script>
+        <!-- CHATBOT WIDGET END -->
+
+        <p>Note: In production, replace <code>localhost:8000</code> with your actual public API URL.</p>
+    </div>
+</body>
+</html>

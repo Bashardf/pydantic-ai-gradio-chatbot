@@ -1,131 +1,144 @@
-# pydantic-ai-gradio-chatbot
+# Pydantic AI Chatbot Template
 
-[![CI](https://github.com/Bashardf/pydantic-ai-gradio-chatbot/actions/workflows/ci.yml/badge.svg)](https://github.com/Bashardf/pydantic-ai-gradio-chatbot/actions/workflows/ci.yml)
-[![Python 3.12](https://img.shields.io/badge/python-3.12.10-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Pydantic AI](https://img.shields.io/badge/Pydantic-AI-agent-orange.svg)](https://ai.pydantic.dev/)
-[![Gradio](https://img.shields.io/badge/Gradio-6.7+-yellow.svg)](https://gradio.app/)
+An AI chatbot backend and website widget starter built with **Python**, **Pydantic AI**, **FastAPI**, **Gradio**, and **OpenAI**.
 
-Ein produktionsnaher **OpenAI-Chatbot** mit [Pydantic AI](https://ai.pydantic.dev/), [Gradio](https://gradio.app/) und Security-Basics.
+This project provides a production-oriented foundation for building intelligent assistants that can be embedded into company websites, used as internal document experts, or served as a standalone chat API.
 
-![Chatbot Features](https://img.shields.io/badge/Streaming-yes-success)
-![RAG](https://img.shields.io/badge/RAG-PDF-blue)
-![Tools](https://img.shields.io/badge/Tools-time%20%7C%20calc%20%7C%20search-informational)
-![Rate Limits](https://img.shields.io/badge/Rate%20Limits-enabled-critical)
+## 🚀 Overview
 
----
+This template bridges the gap between a simple LLM script and a real-world application. It includes message persistence, RAG (Retrieval-Augmented Generation) for PDF documents, a lead capture system, and a ready-to-use web widget.
 
-## Features
+### Use Cases:
+*   **Customer Support:** Add an AI assistant to your website that knows your product documentation.
+*   **Document Expert:** Chat with your own PDFs (brochures, manuals, contracts).
+*   **Lead Generation:** Automatically capture and store potential customer info during chat.
+*   **AI Engineering Portfolio:** A clean, modular example of a modern AI agent architecture.
 
-| Feature | Beschreibung |
-|---------|--------------|
-| 💬 **Chat** | Multi-Turn mit gespeichertem Verlauf |
-| ⚡ **Streaming** | Antworten in Echtzeit |
-| 🛠️ **Tools** | Uhrzeit, Rechner, PDF-Suche |
-| 📄 **RAG** | PDF hochladen & Fragen stellen |
-| 🔒 **Security** | Input-Validierung, Secret-Redaction, Rate-Limits |
-| 🐳 **Docker** | `docker compose up` |
+## ✨ Features
 
-## Schnellstart
+### Implemented
+- [x] **FastAPI Backend:** Robust REST API with SSE (Server-Sent Events) streaming support.
+- [x] **Pydantic AI Agent:** Type-safe agent logic with integrated tools (Calculator, Time, Lead Capture).
+- [x] **Advanced RAG:** PDF document ingestion and semantic search using **ChromaDB**.
+- [x] **Persistent Storage:** Chat history and lead data stored in **SQLite** via **SQLModel**.
+- [x] **Hybrid Model Support:** Use **OpenAI** (cloud) or **Ollama** (local) seamlessly.
+- [x] **Web Widget:** Embeddable JavaScript/CSS widget for easy website integration.
+- [x] **Admin/Demo UI:** **Gradio** interface for testing agent logic and uploading documents.
+- [x] **Security:** Input validation, rate limiting, and secret redaction in logs.
 
+### Planned / Roadmap
+- [ ] Authentication & User Management (OAuth2).
+- [ ] Multi-tenant support (separate knowledge bases per client).
+- [ ] Support for local embeddings (fully offline RAG).
+- [ ] Admin dashboard for lead management and chat analytics.
+- [ ] Support for more file types (DOCX, CSV, Web Crawling).
+
+## 🛠 Tech Stack
+
+*   **Logic:** Python 3.12, [Pydantic AI](https://github.com/pydantic/pydantic-ai)
+*   **API:** FastAPI, Uvicorn
+*   **Database:** SQLModel (SQLAlchemy + Pydantic), SQLite
+*   **Vector DB:** ChromaDB
+*   **LLMs:** OpenAI (GPT-4o), Ollama (Llama 3)
+*   **Frontend:** Gradio, Vanilla JS/CSS (Widget)
+
+## 📐 Architecture
+
+```text
+       Website / App / Widget
+                  |
+                  v
+           FastAPI Backend (:8000)
+                  |
+        ┌─────────┴─────────┐
+        ▼                   ▼
+  Pydantic AI Agent    History & Leads
+        |            (SQLite/SQLModel)
+        ├─> Tools (Lead Capture, Search)
+        ├─> Knowledge Base (ChromaDB + PDFs)
+        └─> LLM (OpenAI or Ollama)
+```
+
+## 📋 Getting Started
+
+### Prerequisites
+*   Python 3.12+
+*   OpenAI API Key (optional if using Ollama)
+*   Ollama (optional, for local models)
+
+### Setup
+1.  **Clone the repo:**
+    ```bash
+    git clone https://github.com/your-username/pydantic-ai-chatbot.git
+    cd pydantic-ai-chatbot
+    ```
+
+2.  **Create virtual environment:**
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate  # Linux/macOS
+    .venv\Scripts\activate     # Windows
+    ```
+
+3.  **Install requirements:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Configure Environment:**
+    ```bash
+    cp .env.example .env
+    # Edit .env with your keys and preferred model
+    ```
+
+### Running the Application
+
+**1. Start the API (Production Backend):**
 ```bash
-git clone https://github.com/Bashardf/pydantic-ai-gradio-chatbot.git
-cd pydantic-ai-gradio-chatbot
-
-python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-
-cp .env.example .env               # Windows: copy .env.example .env
-# OPENAI_API_KEY in .env eintragen und speichern!
-
-python app.py
+uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
+*   **Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
+*   **Widget Demo:** [http://localhost:8000/widget/demo.html](http://localhost:8000/widget/demo.html)
 
-→ Browser: **http://127.0.0.1:7860**
-
-## Konfiguration
-
-```env
-OPENAI_API_KEY=sk-...
-MODEL_NAME=openai:gpt-4o-mini
-
-# Rate Limits (optional)
-RATE_LIMIT_CHAT_REQUESTS=30
-RATE_LIMIT_CHAT_WINDOW=60
-RATE_LIMIT_PDF_REQUESTS=5
-RATE_LIMIT_PDF_WINDOW=3600
-```
-
-| Variable | Standard | Beschreibung |
-|----------|----------|--------------|
-| `MODEL_NAME` | `openai:gpt-4o-mini` | OpenAI-Modell |
-| `GRADIO_SHARE` | `false` | Öffentlicher Gradio-Link |
-| `RATE_LIMIT_CHAT_*` | 30 / 60s | Max. Chat-Anfragen |
-
-> ⚠️ **Niemals** `.env` committen. Nur `.env.example` ins Repo.
-
-## Security
-
-| Maßnahme | Details |
-|----------|---------|
-| **Input validation** | Max. 4000 Zeichen, PDF-Magic-Bytes, sichere Dateinamen |
-| **Exposed secrets** | Keys nur in `.env`, Redaction in Fehlern, CI Secret-Scan |
-| **Rate limits** | Chat & PDF-Upload pro Zeitfenster |
-
-Details: [SECURITY.md](SECURITY.md)
-
+**2. Start the Gradio UI (Admin/Demo):**
 ```bash
-python scripts/check_secrets.py   # lokal vor dem Push
+python -m app.gradio_app
 ```
+*   **URL:** [http://localhost:7860](http://localhost:7860)
 
-## Projektstruktur
+## 📖 API Usage
 
-```
-pydantic-ai-gradio-chatbot/
-├── app.py                 # Gradio UI
-├── agent.py               # Pydantic-AI Agent + Tools
-├── config.py              # Konfiguration
-├── rag.py                 # PDF RAG
-├── history.py             # Chat-Persistenz
-├── security/              # Validierung, Rate-Limits, Redaction
-├── scripts/check_secrets.py
-├── .github/workflows/ci.yml
-├── Dockerfile
-└── docker-compose.yml
-```
-
-## Docker
-
+### Chat Endpoint
 ```bash
-docker compose up --build
+curl -X POST "http://localhost:8000/chat" \
+     -H "Content-Type: application/json" \
+     -d '{"message": "What services do you offer?", "client_id": "my-site", "use_rag": true}'
 ```
 
-## Deployment
+### PDF Upload (Indexing)
+```bash
+curl -X POST "http://localhost:8000/upload?client_id=my-site" \
+     -F "file=@brochure.pdf"
+```
+*Indexing happens asynchronously in the background.*
 
-| Methode | Befehl / Setting |
-|---------|------------------|
-| Lokal | `python app.py` |
-| Öffentlicher Link | `GRADIO_SHARE=true` in `.env` |
-| Docker | `docker compose up` |
+## 🔒 Security
 
-Für Produktion: Reverse Proxy mit Authentifizierung vor Gradio.
+*   **Secrets:** Never commit your `.env` file. A `scripts/check_secrets.py` script is included and runs in CI.
+*   **Validation:** All inputs are strictly validated via regex and length limits.
+*   **Production:** Use a reverse proxy (like Nginx) with HTTPS and add authentication before deploying publicly.
 
-## Screenshots
+## 🧪 Testing
 
-> Nach dem ersten Start Screenshots in `docs/screenshots/` legen und hier verlinken.
+Run the test suite:
+```bash
+pytest
+```
 
-## Tech Stack
+## 📄 License
 
-- Python 3.12.10
-- [Pydantic AI](https://ai.pydantic.dev/)
-- [Gradio](https://gradio.app/) ≥ 6.7
-- OpenAI API
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Lizenz
+## 👤 Author
 
-[MIT](LICENSE) — frei für Lern- und Demo-Projekte.
-
----
-
-**Repo-Name:** `pydantic-ai-gradio-chatbot` — klar, suchbar, beschreibt den Stack.
+Built as a professional AI engineering starter to explore high-level agent frameworks and robust RAG architectures.

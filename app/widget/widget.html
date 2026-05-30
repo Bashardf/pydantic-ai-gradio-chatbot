@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat Widget – Embed Demo</title>
+  <link rel="stylesheet" href="widget.css" />
+</head>
+<body>
+  <h1>Widget Embed Demo</h1>
+  <p>Dieses Snippet bindet den Chatbot auf jeder Website ein:</p>
+  <pre><code>&lt;script
+  src="http://localhost:8000/widget/widget.js"
+  data-api="http://localhost:8000"
+  data-client-id="default"
+&gt;&lt;/script&gt;</code></pre>
+  <p>API muss laufen: <code>uvicorn app.main:app --port 8000</code></p>
+  <script
+    src="widget.js"
+    data-api="http://localhost:8000"
+    data-client-id="default"
+  ></script>
+</body>
+</html>

@@ -2,20 +2,21 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [ main, repo-final-polish ]
   pull_request:
-    branches: [main, master]
+    branches: [ main ]
 
 jobs:
-  check:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.12
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
@@ -25,14 +26,11 @@ jobs:
       - name: Secret scan
         run: python scripts/check_secrets.py
 
-      - name: Compile check
+      - name: Run tests
         env:
-          OPENAI_API_KEY: sk-test-placeholder-for-ci-only-not-real
-        run: python -m compileall -q .
-
-      - name: Import check
-        env:
-          OPENAI_API_KEY: sk-test-placeholder-for-ci-only-not-real
+          OPENAI_API_KEY: sk-test-fake-not-real-key12345
+          MODEL_NAME: test
+          SKIP_CONFIG_VALIDATION: "1"
+          PYTHONPATH: .
         run: |
-          python -c "from security import validation, rate_limit, secrets"
-          python -c "import config; import rag; import history"
+          pytest tests/test_health.py
