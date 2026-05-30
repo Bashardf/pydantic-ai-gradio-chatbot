@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Secret scan
+        run: python scripts/check_secrets.py
+
+      - name: Compile check
+        env:
+          OPENAI_API_KEY: sk-test-placeholder-for-ci-only-not-real
+        run: python -m compileall -q .
+
+      - name: Import check
+        env:
+          OPENAI_API_KEY: sk-test-placeholder-for-ci-only-not-real
+        run: |
+          python -c "from security import validation, rate_limit, secrets"
+          python -c "import config; import rag; import history"

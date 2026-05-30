@@ -1,0 +1,6 @@
+pydantic-ai
+gradio>=6.7.0
+python-dotenv
+openai
+pypdf
+numpy
