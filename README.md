@@ -69,15 +69,15 @@ This template bridges the gap between a simple LLM script and a real-world appli
 ### Setup
 1.  **Clone the repo:**
     ```bash
-    git clone https://github.com/your-username/pydantic-ai-chatbot.git
-    cd pydantic-ai-chatbot
+    git clone https://github.com/Bashardf/pydantic-ai-gradio-chatbot.git
+    cd pydantic-ai-gradio-chatbot
     ```
 
 2.  **Create virtual environment:**
     ```bash
     python -m venv .venv
     source .venv/bin/activate  # Linux/macOS
-    .venv\Scripts\activate     # Windows
+    .venv\Scripts\Activate.ps1
     ```
 
 3.  **Install requirements:**
