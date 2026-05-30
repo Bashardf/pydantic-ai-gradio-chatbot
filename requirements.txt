@@ -4,7 +4,7 @@ python-dotenv
 openai
 pypdf
 numpy
-fastapi>=0.115.0
+fastapi>=0.136.3
 uvicorn[standard]>=0.32.0
 python-multipart>=0.0.9
 pytest>=8.0.0
